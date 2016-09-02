@@ -23,8 +23,8 @@ body {
   margin: 0;
   padding: 0;
   font: 14px Galaxie;
-  overflow-x: hidden;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -48,6 +48,7 @@ h1 {
   left: -100%;
   transition: left .5s;
   display: block;
+  overflow-y: hidden;
 }
 
 #slideInMenu * {
@@ -55,6 +56,7 @@ h1 {
 
 #slideInMenu.open {
   left: 0;
+  width: calc(100% - 74px);
 }
 
 .logo {
@@ -92,9 +94,10 @@ h1 {
 }
 
 #menuLinks {
-  position: relative;
+  position: fixed;
   top: 60px;
   margin-top: 12px;
+  width: calc(100% - 74px);
 }
 
 #menuLinks > ul > li.primary-item:hover:not(.open) {
@@ -112,9 +115,11 @@ h1 {
 .primary-item {
   font: 21px HUGEAvantGardeBold;
   padding: 24px;
+}
+.primary-item.has-secondary {
   background: url(../images/down-chevron.png);
   background-repeat: no-repeat;
-  background-position: calc(85% - 24px);
+  background-position: calc(100% - 24px);
   background-size: 24px;
 }
 
@@ -122,10 +127,10 @@ h1 {
   background-color: #eee;
 }*/
 
-.primary-item.open {
+.primary-item.has-secondary.open {
   background: url(../images/up-chevron.png);
   background-repeat: no-repeat;
-  background-position: calc(85% - 24px) 24px;
+  background-position: calc(100% - 24px) 24px;
   background-size: 24px;
 }
 
@@ -174,7 +179,7 @@ h1 {
 #mask {
   height: 100vh;
   width: 100vw;
-  position: absolute;
+  position: fixed;
   background: HSLA(0, 0%, 0%, .5);
 }
 
