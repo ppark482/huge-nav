@@ -39,6 +39,9 @@ h1 {
 }
 
 /* ----- mobile ----- */
+.desktop {
+  display: none;
+}
 
 #slideInMenu {
   background: white;
@@ -48,7 +51,6 @@ h1 {
   left: -100%;
   transition: left .5s;
   display: block;
-  overflow-y: hidden;
 }
 
 #slideInMenu * {
@@ -98,10 +100,25 @@ h1 {
   top: 60px;
   margin-top: 12px;
   width: calc(100% - 74px);
+  height: 100%;
+  overflow-y: scroll;
+}
+
+#menuLinks > ul {
+  height: 100%;
 }
 
 #menuLinks > ul > li.primary-item:hover:not(.open) {
   background-color: #eee;
+}
+
+#copyright {
+  font: 12px Helvetica;
+  bottom: 0;
+  position: fixed;
+  padding: 24px;
+  width: 100%;
+  background-color: white;
 }
 
 .secondary-links {
@@ -122,10 +139,6 @@ h1 {
   background-position: calc(100% - 24px);
   background-size: 24px;
 }
-
-/*.primary-item li:hover {
-  background-color: #eee;
-}*/
 
 .primary-item.has-secondary.open {
   background: url(../images/up-chevron.png);
@@ -180,25 +193,109 @@ h1 {
   height: 100vh;
   width: 100vw;
   position: fixed;
-  background: HSLA(0, 0%, 0%, .5);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 #mask.hidden {
   display: none;
 }
 
+#navLinks {
+  display: none;
+}
+
 /* ----- desktop ----- */
 @media (min-width: 767px) {
+  .desktop {
+    display: block;
+  }
   #slideInMenu {
     display: block;
   }
   #navigation-bar {
     height: 74px;
+    width: 100%;
+    display: inline-block
   }
+  .logo {
+    width: 60px;
+    margin: 24px;
+    display: inline-block;
+  }
+  #navLinks {
+    display: block;
+    width: 100%;
+    position: fixed;
+    display: inline-block;
+  }
+  #navLinks > ul {
+    display: inline-block;
+  }
+
+  #navLinks .primary-item {
+    display: inline-block;
+    background: none;
+    color: white;
+    font-size: 14px;
+    line-height: 26px;
+  }
+
+  #navLinks .secondary-links {
+    display: none;
+  }
+
+  #navLinks .secondary-item {
+    width: 100%;
+  }
+
+  #navLinks .secondary-item:first-child {
+    padding-top: 12px;
+  }
+
+  #navLinks .secondary-item:last-child {
+    padding-bottom: 12px;
+  }
+
+  #navLinks .primary-item:hover, #navLinks .primary-item.open.has-secondary {
+    background: white;
+    color: #ec008c;
+  }
+/*
+  #navLinks .primary-item.open {
+    background: none;
+    color: white;
+  }*/
+
+  #navLinks .primary-item.open .secondary-links {
+    background: white;
+    display: block;
+    position: absolute;
+    top: 74px;
+    margin-top: 0;
+    overflow: visible;
+  }
+
+  #navLinks .secondary-item {
+    background: white;
+    color: black;
+  }
+
+  #navLinks .secondary-item:hover {
+    background: #eee; 
+    color: #ec008c;
+  }
+
   .hero-container {
     min-height: 640px;
   }
   #menuToggle {
     display: none;
+  }
+}
+
+/* adjusting for navigation bar */
+@media (min-width: 920px) {
+  #navLinks .primary-item {
+    font-size: 21px;
   }
 }

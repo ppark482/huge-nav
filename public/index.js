@@ -30,23 +30,29 @@
 	getNavBarData('api/nav.json');
 
 	document.querySelector('#menuToggle').onclick = toggleMenu;
-	document.querySelector('#menuLinks').onclick = toggleSecondaryMenu;
+	document.querySelector('#menuLinks').onclick = toggleDropdown;
+	document.querySelector('#navLinks').onclick = toggleDropdown;
+	document.querySelector('#mask').onclick = resetDropdowns;
 
 	function toggleMenu() {
 		document.querySelector('#slideInMenu').classList.toggle('open');
 		document.querySelector('#mainBody').classList.toggle('open');
 		document.querySelector('#menuToggle').classList.toggle('open');
+		toggleMask();
+	}
+
+	function toggleMask() {
 		document.querySelector('#mask').classList.toggle('hidden');
 	}
 
 	function populateMenu(items) {
-		console.log('items: ', items);
 		var ul = '<ul>';
 		forEach(items, function(item) {
 			ul += generateMenuItem(item);
 		});
 		ul += '</ul>';
 		document.querySelector('#menuLinks').innerHTML = ul;
+		document.querySelector('#navLinks').innerHTML = ul;
 	}
 
 	function generateMenuItem(item) {
@@ -67,10 +73,35 @@
 		return '<li class="secondary-item"><a href="' + item.url + '">' + item.label + '</a></li>';
 	}
 
-	function toggleSecondaryMenu(e) {
+	function toggleDropdown(e) {
 		e.stopPropagation();
+		// need to close any other open dropdowns
+		if (e && e.target && e.target.parentElement && e.target.parentElement.children && e.target.parentElement.children.length) {
+			forEach(e.target.parentElement.children, function(item) {
+				if (item.classList && item.classList.contains('open')) {
+					item.classList.toggle('open');
+				}
+			});
+		}
 		e.target.classList.toggle('open');
-		console.log(e.target.classList);
+		document.querySelector('#mask').classList.remove('hidden');
+	}
+
+	function resetDropdowns(e) {
+		var mask = document.querySelector('#mask');
+		if (!mask.classList.contains('hidden')) {
+			mask.classList.add('hidden');
+		}
+		closeAllDropdowns();
+	}
+
+	function closeAllDropdowns() {
+		var navLinks = document.querySelector('#navLinks > ul');
+		forEach(navLinks.children, function(link) {
+			if (link.classList.contains('open')) {
+				link.classList.remove('open');
+			}
+		});
 	}
 
 	// utility functions
