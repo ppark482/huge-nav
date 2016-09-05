@@ -156,6 +156,10 @@ h1 {
   margin-bottom: -24px;
 }
 
+.primary-item:last-child.open > .secondary-links:last-child {
+  margin-bottom: 100px
+}
+
 .secondary-item {
   font: 16px Galaxie;
   line-height: 48px;
