@@ -1,12 +1,35 @@
+/*
+*
+* call `start` on HugeNav and pass in endpoint with nav menu data
+* Ex:
+* HugeNav.start(endpoint) 
+* 
+* To test, call `test` on HugeNav and pass in a true or false verbose tag
+* Ex:
+* HugeNav.test('api/nav.json', false);
+*
+*/
+
 var HugeNav = (function() {
 	var httpRequest;
+	var testing;
+	var testingRequest;
 
-	function getNavBarData(url) {
+	function getNavBarData(url, callback) {
 		httpRequest = new XMLHttpRequest();
 		if (!httpRequest) {
 			console.log('could not create an XMLHTTP instance');
+			return;
 		}
-		httpRequest.onreadystatechange = handleNavBarData;
+		if (callback && testing) {
+			testingRequest = new XMLHttpRequest();
+			testingRequest.onreadystatechange = callback;
+			testingRequest.open('GET', url);
+			testingRequest.send();
+			return;	
+		} else {
+			httpRequest.onreadystatechange = handleNavBarData;
+		}	
 		httpRequest.open('GET', url);
 		httpRequest.send();
 	}
@@ -119,8 +142,93 @@ var HugeNav = (function() {
 		}
 	}
 
+	// tests
+	function runTests(endpoint, verbose) {
+		var failedTests = 0;
+		var passedTests = 0;
+		testing = true;
+		console.log('----- running tests -----');
+		_testType(endpoint, 'string');
+		getNavBarData(endpoint, function() {
+			if (testingRequest.readyState === XMLHttpRequest.DONE) {
+				if (testingRequest.status === 200) {
+					_testResponse(JSON.parse(testingRequest.responseText));
+				}
+			}
+		});
+
+		function _testType(obj, type) {
+			if (typeof obj === type) {
+				if (verbose) {
+					console.log('Type of "', obj, ' " should be "', type + ' "', '----- PASSES');
+				}
+				passedTests++;
+			} else if (type === 'array' && obj.constructor === Array) {
+				if (verbose) {
+					console.log('Type of "', obj, ' " should be "', type + ' "', '----- PASSES');
+				}
+				passedTests++;
+			} else {
+				console.error('Type of "', obj, ' " should be "', type + ' "', '----- FAILS');
+				failedTests++
+			}
+		}
+
+		function _testLength(obj, length) {
+			if (obj.length === length) {
+				if (verbose) {
+					console.log('Should have ', length, ' objects ----- PASSES');
+				}
+				passedTests++;
+			} else {
+				console.error(obj, ' should have ', length, ' objects', '----- FAILS');
+				failedTests++
+			}
+		}
+
+		function _testURL(url) {
+			if (url.split('/')[0] === '#') {
+				if (verbose) {
+					console.log('Valid url: ', url, '----- PASSES');
+				}
+				passedTests++;
+			} else {
+				console.error('Invalid url, must start with "#"', url, '----- FAILS');
+				failedTests++;	
+			}
+		}
+
+		function _testResponse(items) {
+			_testType(items, 'object');
+			_testLength(items.items, items.items.length);
+			forEach(items.items, function(item) {
+				_testType(item, 'object');
+				_testType(item.label, 'string');
+				_testType(item.url, 'string');
+				_testURL(item.url);
+				if (items.items) {
+					_testType(item.items, 'array');
+					forEach(item.items, function(obj) {
+						_testType(obj, 'object');
+						_testType(obj.label, 'string');
+						_testType(obj.url, 'string');
+						_testURL(obj.url);
+					});
+				}
+			});
+			_testSummary();
+		}
+
+		function _testSummary() {
+			console.log('finished tests with ', passedTests, ' passing and ', failedTests, ' failing');
+			testing = false;
+		}
+
+	}
+
 	return {
-		start: getNavBarData
+		start: getNavBarData,
+		test: runTests
 	}
 
 }());
