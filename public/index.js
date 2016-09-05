@@ -84,7 +84,9 @@
 			});
 		}
 		e.target.classList.toggle('open');
-		document.querySelector('#mask').classList.remove('hidden');
+		if (e.target.classList.contains('has-secondary')) {
+			document.querySelector('#mask').classList.remove('hidden');
+		}
 	}
 
 	function resetDropdowns(e) {

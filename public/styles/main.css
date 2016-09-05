@@ -89,6 +89,7 @@ h1 {
   top: 0;
   width: 100%;
   transition: left .5s;
+  z-index: 2;
 }
 
 #slideInMenu.open#navigation-bar {
@@ -194,6 +195,7 @@ h1 {
   width: 100vw;
   position: fixed;
   background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
 }
 
 #mask.hidden {
@@ -206,8 +208,26 @@ h1 {
 
 /* ----- desktop ----- */
 @media (min-width: 767px) {
+  .title {
+    /* negative margins to maintain position when resizing */
+    position: absolute;
+    color: white;
+    display: block;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    margin: -240px 0 0 -330px;
+    max-width: 700px;
+  }
+  h1 {
+    font-size: 120px;
+    padding: 0;
+  }
   .desktop {
     display: block;
+  }
+  .content {
+    padding: 50px;
   }
   #slideInMenu {
     display: block;
@@ -260,11 +280,6 @@ h1 {
     background: white;
     color: #ec008c;
   }
-/*
-  #navLinks .primary-item.open {
-    background: none;
-    color: white;
-  }*/
 
   #navLinks .primary-item.open .secondary-links {
     background: white;
