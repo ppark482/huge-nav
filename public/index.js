@@ -1,6 +1,6 @@
 /*
 *
-* call `start` on HugeNav and pass in endpoint with nav menu data
+* Call `start` on HugeNav and pass in endpoint with nav menu data
 * Ex:
 * HugeNav.start(endpoint) 
 * 
