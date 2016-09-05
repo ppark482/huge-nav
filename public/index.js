@@ -1,4 +1,4 @@
-(function() {
+var HugeNav = (function() {
 	var httpRequest;
 
 	function getNavBarData(url) {
@@ -26,8 +26,6 @@
 			populateMenu(items.items);
 		}
 	}
-
-	getNavBarData('api/nav.json');
 
 	document.querySelector('#menuToggle').onclick = toggleMenu;
 	document.querySelector('#menuLinks').onclick = toggleDropdown;
@@ -86,8 +84,6 @@
 		e.target.classList.toggle('open');
 		if (e.target.classList.contains('has-secondary') && e.target.classList.contains('open')) {
 			document.querySelector('#mask').classList.remove('hidden');
-		} else {
-			document.querySelector('#mask').classList.add('hidden');
 		}
 	}
 
@@ -121,6 +117,10 @@
 		for (var i = 0; i < collection.length; i++) {
 			callback.call(scope, collection[i], i);
 		}
+	}
+
+	return {
+		start: getNavBarData
 	}
 
 }());
